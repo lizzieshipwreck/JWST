@@ -13,7 +13,7 @@ parser.on('readable', () => {
         const rawDate = record[0].trim().replace(' 00:00', '');
         const JWSTDate = moment(rawDate).format('MMM DD')
         
-        const ra = record[3].trimEnd();
+        const ra = record[3].trim();
         const dec = record[4].trim();
 
         JWSTRecord['label'] = JWSTDate;
