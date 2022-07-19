@@ -19,15 +19,14 @@ parser.on('readable', () => {
         JWSTRecord['label'] = JWSTDate;
         JWSTRecord['ra'] = ra;
         JWSTRecord['dec'] = dec;
-
-        fs.appendFile('L2_formatted.txt', util.inspect(JWSTRecord) + ",\n", (done, err) => {
-            if (err) {
+        try {
+            fs.appendFileSync('JWST_formatted.txt', util.inspect(JWSTRecord) + ",\n")
+            console.log('Wrote record: ', JWSTRecord)
+        } catch (err) {
                 console.error("Error writing record: ", record);
                 errorRows.push(record);
             }
-            console.log('Wrote record: ', JWSTRecord)
-        })
     }
 })
 
-fs.createReadStream(__dirname+'/L2_Ephemeris.csv').pipe(parser);
+fs.createReadStream(__dirname+'/JWST_Ephemeris.csv').pipe(parser);
