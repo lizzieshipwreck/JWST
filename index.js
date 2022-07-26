@@ -9,10 +9,6 @@ const parser = parse(); // creates the CSV parser object
 const reformattedFilename = 'JWST_formatted.txt'; // the default output file name
 
 parser.on('readable', () => { // when the parser can read the input
-    if (fs.existsSync(reformattedFilename)) {
-        // delete any existing output files (that were created last time you ran the script)
-        fs.unlinkSync(reformattedFilename)
-    }
     let record; // initialize a variable for a line of our input CSV file data
     while ((record = parser.read()) !== null) { // while the next line of the input CSV file is not null
         let JWSTRecord = {}; // create the object that will hold our reformatted data
@@ -36,6 +32,11 @@ parser.on('readable', () => { // when the parser can read the input
             }
     }
 })
+
+// delete any existing output files (that were created last time you ran the script)
+if (fs.existsSync(reformattedFilename)) {
+    fs.unlinkSync(reformattedFilename)
+}
 
 // read the input file and pipe it through the parser (this kicks everything off)
 fs.createReadStream(__dirname+'/JWST_Ephemeris.csv').pipe(parser);
